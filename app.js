@@ -86,7 +86,7 @@ function eventHandler(e) {
     } else {
         console.log(images.all);
         imgSection.removeEventListener('click', eventHandler);
-        button.addEventListener('click', buttonEvent);
+       
     }
 }
 
@@ -101,11 +101,11 @@ function buttonEvent(e) {
 
     }
 
-
+    button.removeEventListener('click', buttonEvent);
 
 }
 
 imgSection.addEventListener('click', eventHandler);
 imgRender();
-
+button.addEventListener('click', buttonEvent);
 
