@@ -35,27 +35,38 @@ function getRandomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 let click = 0;
-let left = 0;
-let right = 0;
-let middle = 0;
+let left = -1;
+let right = -1;
+let middle = -1;
 
 function imgRender() {
     let lIndex = getRandomNum(0, imgArr.length - 1);
-    let mIndex = getRandomNum(0, imgArr.length - 1);
-    let rIndex = getRandomNum(0, imgArr.length - 1);
+    let mIndex ;
+    let rIndex;
 
-    while (lIndex === mIndex) {
-        mIndex = getRandomNum(0, imgArr.length - 1);
+ if (lIndex==left)
+    {
+        lIndex = getRandomNum(0, imgArr.length - 1);
     }
 
-    while ((rIndex === lIndex) || (rIndex === mIndex)) {
+do {
+     mIndex = getRandomNum(0, imgArr.length - 1);
+    rIndex = getRandomNum(0, imgArr.length - 1);
+}
+while (lIndex===rIndex||lIndex===mIndex||rIndex==mIndex){
+    if(rIndex==right){
         rIndex = getRandomNum(0, imgArr.length - 1);
     }
+   
+    if(mIndex==middle){
+        mIndex = getRandomNum(0, imgArr.length - 1);
+    }
+}
 
     left = lIndex;
     right = rIndex;
     middle = mIndex;
-    //console.log("l,m,r "+ lIndex , mIndex, rIndex);
+    console.log("l,m,r " + lIndex, mIndex, rIndex);
     leftImg.src = images.all[lIndex].img;
     middleImg.src = images.all[mIndex].img;
     rightImg.src = images.all[rIndex].img;
@@ -86,7 +97,8 @@ function eventHandler(e) {
     } else {
         console.log(images.all);
         imgSection.removeEventListener('click', eventHandler);
-       
+        CanvasRender();
+
     }
 }
 
@@ -105,7 +117,54 @@ function buttonEvent(e) {
 
 }
 
+
+
+function CanvasRender() {
+
+    let clicks = [];
+    let names = [];
+    let shown = [];
+    for (let i = 0; i < images.all.length; i++) {
+        clicks.push(images.all[i].clicks);
+        names.push(images.all[i].name);
+        shown.push(images.all[i].shown);
+    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: names,
+            datasets: [{
+                label: '# of Votes',
+                data: clicks,
+                backgroundColor:
+                    'rgba(101, 210, 188, 0.2)',
+                borderColor:
+                    'rgba(101, 210, 188, 1)',
+
+                borderWidth: 1
+
+            },
+            {
+                label: '# of shown',
+                data: shown,
+                backgroundColor:
+                    'rgba(11, 61, 122, 0.2)',
+                borderColor:
+                    'rgba(11, 61, 122, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
 imgSection.addEventListener('click', eventHandler);
 imgRender();
 button.addEventListener('click', buttonEvent);
-
