@@ -41,26 +41,25 @@ let middle = -1;
 
 function imgRender() {
     let lIndex = getRandomNum(0, imgArr.length - 1);
-    let mIndex ;
+    let mIndex;
     let rIndex;
 
- if (lIndex==left || lIndex==right || lIndex==middle)
-    {
+    if (lIndex == left || lIndex == right || lIndex == middle) {
         lIndex = getRandomNum(0, imgArr.length - 1);
     }
 
-do {
-     mIndex = getRandomNum(0, imgArr.length - 1);
-    rIndex = getRandomNum(0, imgArr.length - 1);
-    if(rIndex==right|| rIndex==left || rIndex==middle){
-        rIndex = getRandomNum(0, imgArr.length - 1);
-    }
-   
-    if(mIndex==middle || mIndex==left || mIndex==right){
+    do {
         mIndex = getRandomNum(0, imgArr.length - 1);
+        rIndex = getRandomNum(0, imgArr.length - 1);
+        if (rIndex == right || rIndex == left || rIndex == middle) {
+            rIndex = getRandomNum(0, imgArr.length - 1);
+        }
+
+        if (mIndex == middle || mIndex == left || mIndex == right) {
+            mIndex = getRandomNum(0, imgArr.length - 1);
+        }
     }
-}
-while (lIndex===rIndex||lIndex===mIndex||rIndex==mIndex);
+    while (lIndex === rIndex || lIndex === mIndex || rIndex == mIndex);
 
     left = lIndex;
     right = rIndex;
