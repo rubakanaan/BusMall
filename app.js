@@ -100,6 +100,7 @@ function eventHandler(e) {
 
 
     } else {
+        getData();
         console.log(images.all);
         imgSection.removeEventListener('click', eventHandler);
         CanvasRender();
@@ -108,7 +109,7 @@ function eventHandler(e) {
 }
 
 function buttonEvent(e) {
-    getData();
+  
     
     for (let i = 0; i < images.all.length; i++) {
         const liEl = document.createElement('li');
@@ -139,7 +140,7 @@ function getData() {
     }
 }
 function CanvasRender() {
-
+    
     let clicks = [];
     let names = [];
     let shown = [];
