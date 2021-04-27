@@ -13,6 +13,11 @@ const rightImg = document.getElementById('rightImg');
 const middleImg = document.getElementById('middleImg');
 const button = document.getElementById("button");
 const article = document.getElementById('article');
+const ulEl = document.createElement('ul');
+article.appendChild(ulEl);
+
+
+
 
 function images(name) {
     this.name = name.split('.')[0];
@@ -41,26 +46,25 @@ let middle = -1;
 
 function imgRender() {
     let lIndex = getRandomNum(0, imgArr.length - 1);
-    let mIndex ;
+    let mIndex;
     let rIndex;
 
- if (lIndex==left || lIndex==right || lIndex==middle)
-    {
+    if (lIndex == left || lIndex == right || lIndex == middle) {
         lIndex = getRandomNum(0, imgArr.length - 1);
     }
 
-do {
-     mIndex = getRandomNum(0, imgArr.length - 1);
-    rIndex = getRandomNum(0, imgArr.length - 1);
-    if(rIndex==right|| rIndex==left || rIndex==middle){
-        rIndex = getRandomNum(0, imgArr.length - 1);
-    }
-   
-    if(mIndex==middle || mIndex==left || mIndex==right){
+    do {
         mIndex = getRandomNum(0, imgArr.length - 1);
+        rIndex = getRandomNum(0, imgArr.length - 1);
+        if (rIndex == right || rIndex == left || rIndex == middle) {
+            rIndex = getRandomNum(0, imgArr.length - 1);
+        }
+
+        if (mIndex == middle || mIndex == left || mIndex == right) {
+            mIndex = getRandomNum(0, imgArr.length - 1);
+        }
     }
-}
-while (lIndex===rIndex||lIndex===mIndex||rIndex==mIndex);
+    while (lIndex === rIndex || lIndex === mIndex || rIndex == mIndex);
 
     left = lIndex;
     right = rIndex;
@@ -91,7 +95,9 @@ function eventHandler(e) {
             images.all[middle].clicks++;
         }
         click++;
+
         imgRender();
+
 
     } else {
         console.log(images.all);
@@ -102,22 +108,36 @@ function eventHandler(e) {
 }
 
 function buttonEvent(e) {
-    const ulEl = document.createElement('ul');
-    article.appendChild(ulEl);
-
+    getData();
+    
     for (let i = 0; i < images.all.length; i++) {
         const liEl = document.createElement('li');
         ulEl.appendChild(liEl);
         liEl.textContent = images.all[i].name + " had " + images.all[i].clicks + ' votes, and was seen ' + images.all[i].shown + ' times.'
 
     }
-
+    saveData();
     button.removeEventListener('click', buttonEvent);
 
 }
 
+function saveData() {
+    localStorage.setItem('ulEl', JSON.stringify(images.all));
+}
 
-
+function getData() {
+    let data = JSON.parse(localStorage.getItem('ulEl'));
+    // console.log(data);
+    // console.log(data.length)
+    if (data) {
+        for (let i = 0; i < data.length; i++) {
+            images.all[i].shown += data[i].shown;
+            images.all[i].clicks += data[i].clicks;
+            console.log(images.all[i].shown, images.all[i].clicks);
+        }
+     
+    }
+}
 function CanvasRender() {
 
     let clicks = [];
@@ -166,4 +186,5 @@ function CanvasRender() {
 
 imgSection.addEventListener('click', eventHandler);
 imgRender();
+
 button.addEventListener('click', buttonEvent);
